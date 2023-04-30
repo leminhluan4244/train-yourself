@@ -1,53 +1,66 @@
+### Sơ lượt về docker
+
+- Kiểm tra phiên bản: `docker --version`
+
 ### Images
 
 - Chỉ có thể đọc, không thể sửa đổi
 - Khi images khởi chạy, phiên bản thực thi của nó được gọi là container
 
-1. Kiểm tra danh sách images: `docker images`
-   Danh sách kết quả trả ra
-   | REPOSITORY | TAG | IMAGE ID |CREATED |SIZE|
-   |----------|:-------------:|------:|------:|------:|
-   |Tên Images| phiên bảng |ID của Images |Thời gian tạo |Dung lượng|
-   |postgres| latest |aa7ac7cd82f1 |12 days ago |360MB|
-1. Kiểm tra danh sách các lệnh với image: `docker image --help`
-1. Kiểm tra danh sách option của một lệnh image: `docker image build --help`
-1. Tìm kiếm image muốn sử dụng: `docker search <tên từ khoá>`
-1. Tải một image: `docker pull <tên image>:<tag (phiên bản)>`. Mặc định nếu không điền tag sẽ là `lastest`
-1. Xoá một image bằng tên: `docker rm <tên image>:<tag (phiên bản)>`
-1. Xoá một image bằng ID: `docker rm <gõ đầy đủ hoặc 1 phần đầu của ID>`
+#### Danh sách lệnh
 
-```
-#kiểm tra phiên bản
-docker --version
+- Kiểm tra danh sách các lệnh với image: `docker image --help`
+- Kiểm tra danh sách option của một lệnh image: `docker image build --help`
 
-#liệt kê các image
-docker images -a
+###### List
 
-#xóa một image (phải không container nào đang dùng)
-docker images rm imageid
+- Kiểm tra danh sách images: `docker images` hoặc `docker images -a`
 
-#tải về một image (imagename) từ hub.docker.com
-docker pull imagename
+  Danh sách kết quả trả ra
+  | REPOSITORY | TAG | IMAGE ID |CREATED |SIZE|
+  |----------|:-------------:|------:|------:|------:|
+  |Tên Images| phiên bảng |ID của Images |Thời gian tạo |Dung lượng|
+  |postgres| latest |aa7ac7cd82f1 |12 days ago |360MB|
 
-#liệt kê các container
-docker container ls -a
+###### Search
 
-#xóa container
-docker container rm containerid
+- Tìm kiếm image muốn sử dụng: `docker search <tên từ khoá>`
 
-#tạo mới một container
-docker run -it imageid
+###### Create
 
-#thoát termial vẫn giữ container đang chạy
-CTRL +P, CTRL + Q
+- Tải một image: `docker pull <tên image>:<tag (phiên bản)>`. Mặc định nếu không điền tag sẽ là `lastest`
 
-#Vào termial container đang chạy
-docker container attach containerid
+###### Delete
 
-#Chạy container đang dừng
-docker container start -i containerid
+- Xoá một image bằng tên: `docker rm <tên image>:<tag (phiên bản)>`
+- Xoá một image bằng ID: `docker rm <gõ đầy đủ hoặc 1 phần đầu của ID>`
 
-#Chạy một lệnh trên container đang chạy
-docker exec -it containerid command
+### Container
 
-```
+###### List
+
+- Liệt kê danh sách các container: `docker container ls -a` hoặc `docker container ps`
+
+###### Create
+
+- Tạo mới container: `docker run -it <imageid>`
+
+###### Delete
+
+- Xoá một container bằng tên: `docker container rm <containerid>`
+
+###### Keep
+
+- Thoát termial vẫn giữ container đang chạy: CTRL +P, CTRL + Q
+
+###### Run
+
+- Chạy container đang dừng: `docker container start -i <containerid>`
+- Chạy một lệnh trên container đang chạy: `docker exec -it <containerid> command`
+- Vào termial container đang chạy: `docker container attach <containerid>`
+
+###### Turn off
+
+- Tắt 1 container : `exit`
+
+######
