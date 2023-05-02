@@ -1,0 +1,58 @@
+version: "3.8"
+
+#NETWORK
+networks:
+  my-network:
+    driver: bridge
+
+# VOLUMES
+volumes:
+  dir-site:
+    driver_opts:
+      type: none
+      device: /Users/leminhluan4244/Documents/Project/x-marines/train-yourself/docker/docker-compose/mycode/sites
+      o: bind
+# SERVICES
+services:
+  # container PHP
+  my-php:
+    container_name: php-product
+    build:
+      dockerfile: Dockerfile # Tên file khởi chạy contianer từ image
+      context: ./php/ # Vị trí chứa Dockerfile tính từ thư mục chứ docker compose file
+    hostname: php # Đặt tên cho container được tạo ra
+    restart: always # Luôn tự khởi động lại khi có gì đó cập nhật mới hoặc dịch vụ PHP bị dừng
+    networks:
+      - my-network
+    volumes:
+      - dir-site:/home/sites # Ánh xạ ổ đĩa dir-site vào thư mục /home/sites của container
+  # container HTTPD
+  my-http:
+    container_name: c-httpd01
+    image: "httpd:latest" # Dịch vụ này không đọc config từ docker file mà lấy image trực tiếp từ dọcker hub
+    hostname: httpd
+    restart: always
+    networks:
+      - my-network
+    volumes:
+      - dir-site:/home/sites # Ánh xạ ổ đĩa dir-site vào thư mục /home/sites của container
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf # Ánh xạ file config trước đó để có thể tuỳ chỉnh cấu hình
+    ports:
+      - "9999:80" # Truy cập cổng 9999 trên máy host thì sẽ ánh xạ tới cổng 80 của container
+      - "443:443" # tương tự
+  # container MYSQL
+  my-mysql:
+    container_name: mysql-product
+    image: "mysql:latest"
+    hostname: mysql
+    restart: always
+    networks:
+      - my-network
+    volumes:
+      - ./db:/var/lib/mysql # Ánh xạ thư mục lưu trữ data vào thư mục db trên máy host
+      - ./my.cnf:/etc/my.conf
+    environment: # Thiết lập DB và tài khoản
+      - MYSQL_ROOT_PASSWORD:123abc
+      - MYSQL_DATABASE:db_site
+      - MYSQL_USER:siteuser
+      - MYSQL_PASSWORD:sitepass
